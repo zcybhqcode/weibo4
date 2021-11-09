@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', 'StaticPagesController@home');
-Route::get('/help', 'StaticPagesController@help');
-Route::get('/about', 'StaticPagesController@about');
+//普通路由
+Route::get('/', 'StaticPagesController@home')->name('home');
+Route::get('/help', 'StaticPagesController@help')->name('help');
+Route::get('/about', 'StaticPagesController@about')->name('about');
+//明名路由
+Route::get('signup', 'usersController@create')->name('signup');
+//资源路由 包括了7个路径
+Route::resource('users', 'UsersController');
+//Route::get('/users/{user}', 'UsersController@show')->name('users.show');
