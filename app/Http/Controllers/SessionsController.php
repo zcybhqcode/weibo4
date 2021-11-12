@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Auth;//引入Auth
+//会话控制器
+class SessionsController extends Controller
+{
+    //加入create 动作，并返回一个指定的登录视图
+    public function create()
+	{
+        return view('sessions.create');
+	}
+    //数据验证
+    public function store(Request $request)
+    {
+        $credentials = $this->validate($request,[
+            'email' => 'required|email|max:255',
+            'password' => 'required'
+        ]);
+       //Auth::user()方法==>获取当前登录用户的信息
+       if (Auth::attempt($credentials)){
+           session()->flash('success','欢迎回来');
+           return redirect()->route('users.show',[Auth::user()]);
+       }else{
+           session()->flash('danger','抱歉,请输入正确的邮箱或密码');
+           return redirect()->back()->withInput();
+       }
+
+    }
+}
