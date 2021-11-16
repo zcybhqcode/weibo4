@@ -20,7 +20,7 @@ class SessionsController extends Controller
             'password' => 'required'
         ]);
        //Auth::user()方法==>获取当前登录用户的信息
-       if (Auth::attempt($credentials)){
+       if (Auth::attempt($credentials,$request->has('remember'))){
            session()->flash('success','欢迎回来');
            return redirect()->route('users.show',[Auth::user()]);
        }else{
@@ -29,4 +29,12 @@ class SessionsController extends Controller
        }
 
     }
+	//用户退出
+	public function destroy()
+	{
+		Auth::logout();
+		session()->flash('success','您已成功退出');
+		return redirect('login');
+	}
+	
 }
