@@ -41,3 +41,6 @@ Route::resource('users', 'UsersController');//用户资源，等同于
 Route::get('login','SessionsController@create')->name('login');//显示登录页面
 Route::post('login', 'SessionsController@store')->name('login');//创建新会话（登录）
 Route::delete('logout','SessionsController@destroy')->name('logout');//销毁会话（退出登录）
+
+//创建用户编辑路由
+Route::get('/users/{user}/edit','UsersController@edit')->name('users.edit');
