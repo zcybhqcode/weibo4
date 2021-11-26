@@ -7,6 +7,14 @@ use Auth;//引入Auth
 //会话控制器
 class SessionsController extends Controller
 {
+    public function __construct()
+    {
+        // 只让未登录用户访问注册页面：
+        $this->middleware('guest', [
+        'only' => ['create']
+        ]);
+    }
+
     //加入create 动作，并返回一个指定的登录视图
     public function create()
 	{
@@ -22,7 +30,8 @@ class SessionsController extends Controller
        //Auth::user()方法==>获取当前登录用户的信息
        if (Auth::attempt($credentials,$request->has('remember'))){
            session()->flash('success','欢迎回来');
-           return redirect()->route('users.show',[Auth::user()]);
+           $fallback = route('users.show',Auth::user());
+           return redirect()->intended($fallback);
        }else{
            session()->flash('danger','抱歉,请输入正确的邮箱或密码');
            return redirect()->back()->withInput();
@@ -36,5 +45,5 @@ class SessionsController extends Controller
 		session()->flash('success','您已成功退出');
 		return redirect('login');
 	}
-	
+
 }

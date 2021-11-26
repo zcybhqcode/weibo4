@@ -43,4 +43,4 @@ Route::post('login', 'SessionsController@store')->name('login');//创建新会�
 Route::delete('logout','SessionsController@destroy')->name('logout');//销毁会话（退出登录）
 
 //创建用户编辑路由
-Route::get('/users/{user}/edit','UsersController@edit')->name('users.edit');
+// Route::get('/users/{user}/edit','UsersController@edit')->name('users.edit');

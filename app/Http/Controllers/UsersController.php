@@ -8,6 +8,28 @@ use Auth;//引入Auth
 
 class UsersController extends Controller
 {
+
+     //过滤未登录用户的 edit
+    public function __construct()
+    {
+        //except 方法指除了后面指定动作（方法名）外，其他动作都需要登录才可以执行
+        $this->middleware('auth',[
+            'except'=>['show','create','store','index']
+        ]);
+        // only方法只让未登录用户访问注册页面：
+        $this->middleware('guest', [
+        'only' => ['create']
+        ]);
+
+    }
+    //用户列表
+	public function index()
+	{
+		// $users = User::all();查询所有
+        $users = User::paginate(10);//显示6条
+		return view('users.index',compact('users'));
+	}
+
     public function create()
     {
         return view('users.create');
@@ -40,12 +62,14 @@ class UsersController extends Controller
     //编辑用户
     public function edit(User $user)
     {
+        $this->authorize('update',$user);
         return view('users.edit',compact('user'));
     }
 
     //验证是否正确修改资料内容
     public function update(User $user,Request $request)
     {
+        $this->authorize('update',$user);
         $this->validate($request,[
             'name' => 'required|max:50',
             'password' => 'nullable|confirmed|min:6'
@@ -62,5 +86,6 @@ class UsersController extends Controller
 
         return redirect()->route('users.show', $user);
     }
+
 
 }
