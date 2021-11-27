@@ -12,6 +12,14 @@ use Carbon\Carbon;
 
 class PasswordController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('throttle:3,10',[
+            'only' => ['sendResetLinkEmail']
+        ]);
+
+    }
+
     //密码重设控制器
 	public function showLinkRequestForm()
 	{
