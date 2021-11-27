@@ -18,8 +18,8 @@ class UsersTableSeeder extends Seeder
         //创建 50 个假用户
 		User::factory()->count(50)->create();
 		$user = User::find(1);
-		$user->name = 'Summer';
-		$user->email = 'summer@example.com';
+		$user->name = 'asda';
+		$user->email = '2857625324@qq.com';
         $user->is_admin = true;
 		$user->save();
     }

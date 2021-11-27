@@ -44,3 +44,6 @@ Route::delete('logout','SessionsController@destroy')->name('logout');//销毁会
 
 //创建用户编辑路由
 // Route::get('/users/{user}/edit','UsersController@edit')->name('users.edit');
+
+//创建激活链接路由
+Route::get('signup/confirm/{token}','UsersController@confirmEmail')->name('confirm_email');
