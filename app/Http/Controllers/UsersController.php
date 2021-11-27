@@ -21,6 +21,11 @@ class UsersController extends Controller
         'only' => ['create']
         ]);
 
+        // 限流 一个小时内只能提交 10 次请求；
+        $this->middleware('throttle:10,60', [
+            'only' => ['store']
+        ]);
+
     }
     //用户列表
 	public function index()
@@ -104,16 +109,13 @@ class UsersController extends Controller
     {
         $view = 'emails.confirm';
         $data = compact('user');
-        $from = '2857625324@qq.com';
-        $name = 'qer';
         $to = $user->email;
         $subject = "感谢注册 Weibo 应用！请确认你的邮箱。";
-        Mail::send($view, $data, function ($message) use ($from, $name, $to,
-        $subject) {
-        $message->from($from, $name)->to($to)->subject($subject);
+        Mail::send($view, $data, function ($message) use ($to,$subject) {
+           $message->to($to)->subject($subject);
         });
     }
-    
+
     //激活成功
     public function confirmEmail($token)
     {
@@ -121,7 +123,7 @@ class UsersController extends Controller
         $user->activated = true;
         $user->activation_token = null;
         $user->save();
-        
+
         Auth::login($user);
         session()->flash('success', '恭喜你，激活成功！');
         return redirect()->route('users.show', [$user]);
