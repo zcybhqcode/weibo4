@@ -57,10 +57,17 @@ class User extends Authenticatable
         $hash = md5(strtolower(trim($this->attributes['email'])));
         return "https://cravatar.cn/avatar/$hash?s=$size";
     }
-    
+
     //在用户模型中，指明一个用户拥有多条微博。
     public function statuses()
     {
-    return $this->hasMany(Status::class);
+        return $this->hasMany(Status::class);
+    }
+
+    //定义一个 feed 方法，使用该方法来获取当前用户关注的人发布过的所有微博动态
+    public function feed()
+    {
+        return $this->statuses()
+                    ->orderBy('created_at', 'desc');
     }
 }
