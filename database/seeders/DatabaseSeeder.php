@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);//假用户
         $this->call(StatusesTableSeeder::class);//假微博数据
-
+        $this->call(FollowersTableSeeder::class);//假粉丝
         Model::reguard();
     }
 }
