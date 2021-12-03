@@ -56,4 +56,8 @@ Route::get('password/reset/{token}', 'PasswordController@showResetForm')->name('
 Route::post('password/reset', 'PasswordController@reset')->name('password.update');
 
 //微博路由
-Route::resource('statuses','StatusesController', ['only' => ['store','destroy']]);
+Route::resource('statuses','StatusesController', ['only' => ['store','destroy']]);
+
+//用户关注者列表和粉丝列表的路由
+Route::get('/users/{user}/followings', 'UsersController@followings')->name('users.followings');//粉丝
+Route::get('/users/{user}/followers', 'UsersController@followers')->name('users.followers');//关注
