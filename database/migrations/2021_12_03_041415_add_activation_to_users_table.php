@@ -17,6 +17,7 @@ class AddActivationToUsersTable extends Migration
             //
             $table->string('activation_token')->nullable();
             $table->boolean('activated')->default(false);
+            $table->index(['activated_at']);
         });
     }
 
