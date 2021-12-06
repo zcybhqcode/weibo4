@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use Auth;
+
 use Illuminate\Support\Str;
 
 class User extends Authenticatable
@@ -67,8 +69,13 @@ class User extends Authenticatable
     //定义一个 feed 方法，使用该方法来获取当前用户关注的人发布过的所有微博动态
     public function feed()
     {
-        return $this->statuses()
-                    ->orderBy('created_at', 'desc');
+        // return $this->statuses()
+        //             ->orderBy('created_at', 'desc');
+        $user_ids = $this->followings->pluck('id')->toArray();
+        array_push($user_ids, $this->id);
+        return Status::whereIn('user_id', $user_ids)
+                            ->with('user')
+                            ->orderBy('created_at', 'desc');
     }
 
 	//使用 belongsToMany 来关联模型之间的多对多关系
